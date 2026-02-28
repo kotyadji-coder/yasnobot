@@ -88,7 +88,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 20px;
+        padding: 8px 20px;
         max-width: var(--section-max-width);
         margin: 0 auto;
       }
@@ -107,6 +107,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
         height: 80px;
       }
 
@@ -853,7 +854,15 @@
 
       @media (max-width: 640px) {
         .header-inner {
-          padding-inline: 16px;
+          padding: 6px 16px;
+        }
+
+        .logo-badge {
+          height: 60px;
+        }
+
+        .logo-badge img {
+          height: 60px;
         }
 
         .logo {
@@ -906,7 +915,7 @@
               </div>
               <div>
                 ЯсноБот
-                <div class="logo-sub">объясняем школу по-человечески</div>
+                <div class="logo-sub">объясняем школу по&#8209;человечески</div>
               </div>
             </div>
           </div>
@@ -1158,7 +1167,7 @@
                 <div class="cta-text-main">
                   <h2 class="cta-title">Попробуйте — это бесплатно</h2>
                   <p class="cta-subtitle">
-                    Первые 10 объяснений — бесплатно. Без регистрации, без привязки карты,
+                    Первые 5 объяснений — бесплатно. Без регистрации, без привязки карты,
                     без лишних форм.
                   </p>
                   <p class="cta-note">
@@ -1167,7 +1176,7 @@
                   </p>
                 </div>
                 <div class="cta-actions">
-                  <div class="cta-badge">1–4 классы · Математика · Русский · Окружающий мир</div>
+                  <div class="cta-badge">1–4 классы · Математика · Русский · Окружающий мир · Английский язык </div>
                   <button class="btn btn-primary btn-lg btn-pill">
                     Запустить ЯсноБота
                   </button>
@@ -1185,7 +1194,7 @@
       <!-- FOOTER -->
       <footer class="footer">
         <div class="footer-inner">
-          <div>© 2025 ЯсноБот</div>
+          <div>© 2026 ЯсноБот</div>
           <div class="footer-links">
             <a href="#" class="footer-link">
               <span>Telegram</span>
@@ -1193,7 +1202,7 @@
             <a href="mailto:hello@yasnobot.ru" class="footer-link">
               <span>Email</span>
             </a>
-            <span>Сделано с <span class="footer-heart">❤️</span> и нейросетями</span>
+            <span>Сделано с <span class="footer-heart">❤️</span> </span>
           </div>
         </div>
       </footer>
