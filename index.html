@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ЯсноБот — AI-помощник для родителей младших школьников</title>
+    <meta
+      name="description"
+      content="ЯсноБот объясняет сложные школьные темы через любимые вселенные ребёнка: Майнкрафт, Роблокс, Гарри Поттер, Марвел, Щенячий Патруль."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-primary: #7c3aed;
+        --color-primary-soft: #a855f7;
+        --color-accent: #fbbf24;
+        --color-bg: #f9fafb;
+        --color-bg-alt: #f3e8ff;
+        --color-text: #111827;
+        --color-muted: #6b7280;
+        --radius-lg: 18px;
+        --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+        --shadow-subtle: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --transition-fast: 0.2s ease-out;
+        --transition-med: 0.35s ease-out;
+        --section-max-width: 1100px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top left, #ede9fe 0, #fefce8 50%, #ffffff 100%);
+        color: var(--color-text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font-family: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: var(--section-max-width);
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* HEADER */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(16px);
+        background: linear-gradient(
+          to bottom,
+          rgba(249, 250, 251, 0.96),
+          rgba(249, 250, 251, 0.86),
+          transparent
+        );
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        max-width: var(--section-max-width);
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.02em;
+        color: var(--color-primary);
+      }
+
+      .logo-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+      }
+
+      .logo-badge img {
+        height: 80px;
+        width: auto;
+        display: block;
+      }
+
+      .logo-sub {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--color-muted);
+      }
+
+      .header-cta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border-radius: 999px;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+          background var(--transition-fast), color var(--transition-fast);
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        color: #f9fafb;
+        box-shadow: 0 14px 30px rgba(124, 58, 237, 0.45);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 16px 40px rgba(124, 58, 237, 0.55);
+      }
+
+      .btn-outline {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        color: var(--color-text);
+      }
+
+      .btn-outline:hover {
+        background: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(148, 163, 184, 0.4);
+      }
+
+      .btn-lg {
+        padding: 14px 26px;
+        font-size: 15px;
+      }
+
+      .btn-pill {
+        border-radius: 999px;
+      }
+
+      /* HERO */
+      .hero {
+        padding: 48px 0 32px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        gap: 40px;
+        align-items: center;
+      }
+
+      .hero-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(124, 58, 237, 0.06);
+        color: var(--color-primary);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .hero-label-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.35);
+      }
+
+      .hero-title {
+        margin: 18px 0 14px;
+        font-size: 38px;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+
+      .hero-title span {
+        background: linear-gradient(135deg, #7c3aed, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-subtitle {
+        margin: 0 0 24px;
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--color-muted);
+        max-width: 520px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .hero-note {
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      .hero-note strong {
+        color: var(--color-primary);
+      }
+
+      .hero-visual {
+        position: relative;
+        padding: 16px;
+      }
+
+      .hero-card-stack {
+        position: relative;
+        width: 100%;
+        max-width: 360px;
+        margin-left: auto;
+      }
+
+      .hero-float {
+        position: absolute;
+        inset: 0;
+        filter: blur(42px);
+        opacity: 0.8;
+        background:
+          radial-gradient(circle at 0 0, rgba(129, 140, 248, 0.7), transparent 55%),
+          radial-gradient(circle at 100% 0, rgba(244, 114, 182, 0.7), transparent 55%),
+          radial-gradient(circle at 50% 100%, rgba(251, 191, 36, 0.7), transparent 55%);
+        z-index: -1;
+      }
+
+      .hero-card {
+        position: relative;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--shadow-soft);
+        padding: 18px 18px 16px;
+        overflow: hidden;
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(148, 163, 184, 0.32);
+        transform-origin: center;
+        animation: floatCard 6s ease-in-out infinite;
+      }
+
+      .hero-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 13px;
+      }
+
+      .hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(124, 58, 237, 0.09);
+        color: var(--color-primary);
+        font-weight: 500;
+      }
+
+      .hero-chip-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+      }
+
+      .hero-card-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      .hero-card-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .hero-example-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--color-muted);
+        margin-bottom: 4px;
+      }
+
+      .hero-example-text {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .hero-tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 10px;
+      }
+
+      .hero-tag {
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(249, 250, 251, 0.9);
+        border: 1px dashed rgba(148, 163, 184, 0.7);
+        font-size: 11px;
+        color: var(--color-muted);
+      }
+
+      .hero-mini-card {
+        position: absolute;
+        right: -12px;
+        bottom: 10px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #581c87, #7c3aed);
+        color: #f9fafb;
+        padding: 10px 12px;
+        width: 170px;
+        font-size: 11px;
+        box-shadow: 0 16px 30px rgba(55, 48, 163, 0.85);
+        transform: rotate(6deg);
+        animation: floatMini 5.5s ease-in-out infinite;
+      }
+
+      .hero-mini-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.19em;
+        opacity: 0.8;
+      }
+
+      .hero-mini-main {
+        margin-top: 6px;
+        font-weight: 600;
+      }
+
+      .hero-mini-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+        font-size: 10px;
+        opacity: 0.85;
+      }
+
+      .hero-pill-row {
+        position: absolute;
+        left: -14px;
+        top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .hero-pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        font-size: 11px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #f97316;
+      }
+
+      .pill-dot.green {
+        background: #22c55e;
+      }
+
+      .pill-dot.blue {
+        background: #3b82f6;
+      }
+
+      @keyframes floatCard {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(1deg);
+        }
+      }
+
+      @keyframes floatMini {
+        0%,
+        100% {
+          transform: translateY(0) rotate(6deg);
+        }
+        50% {
+          transform: translateY(-6px) rotate(3deg);
+        }
+      }
+
+      /* GENERIC SECTION */
+      section {
+        padding: 40px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 26px;
+      }
+
+      .section-title {
+        font-size: 26px;
+        margin: 0 0 8px;
+        letter-spacing: -0.02em;
+      }
+
+      .section-subtitle {
+        margin: 0;
+        font-size: 14px;
+        color: var(--color-muted);
+      }
+
+      /* ПРОБЛЕМА */
+      .problem-section {
+        padding-top: 12px;
+      }
+
+      .problem-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .card {
+        border-radius: var(--radius-lg);
+        padding: 16px 16px 18px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+          border-color var(--transition-fast), background var(--transition-fast);
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-soft);
+        border-color: rgba(124, 58, 237, 0.55);
+        background: #ffffff;
+      }
+
+      .card-icon {
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+
+      .card-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .card-text {
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      .problem-note {
+        text-align: center;
+        font-size: 15px;
+        color: var(--color-muted);
+      }
+
+      .problem-note strong {
+        color: var(--color-text);
+      }
+
+      /* КАК ЭТО РАБОТАЕТ */
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .step-card {
+        position: relative;
+        padding: 16px 16px 18px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        overflow: hidden;
+      }
+
+      .step-number {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(124, 58, 237, 0.08);
+        color: var(--color-primary);
+      }
+
+      .step-icon {
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+
+      .step-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .step-text {
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      .universe-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .universe-pill {
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: rgba(248, 250, 252, 0.95);
+        border: 1px dashed rgba(148, 163, 184, 0.6);
+        font-size: 11px;
+      }
+
+      .steps-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      .steps-arrow {
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        box-shadow: 0 8px 18px rgba(148, 163, 184, 0.45);
+        animation: bounceArrow 1.6s ease-in-out infinite;
+      }
+
+      @keyframes bounceArrow {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(4px);
+        }
+      }
+
+      /* ДЛЯ КОГО */
+      .for-whom-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .for-whom-card {
+        border-radius: var(--radius-lg);
+        padding: 16px 16px 18px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--shadow-subtle);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      .for-whom-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .for-whom-icon {
+        font-size: 24px;
+      }
+
+      .for-whom-title {
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .for-whom-text {
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      /* CTA */
+      .cta-section {
+        padding: 40px 0 48px;
+      }
+
+      .cta-inner {
+        border-radius: 28px;
+        background: radial-gradient(circle at top left, #ede9fe, #7c3aed 55%, #4c1d95);
+        color: #f9fafb;
+        padding: 30px 22px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 26px 60px rgba(55, 48, 163, 0.9);
+      }
+
+      .cta-inner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 0 0, rgba(251, 191, 36, 0.35), transparent 55%),
+          radial-gradient(circle at 100% 0, rgba(244, 114, 182, 0.35), transparent 55%);
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .cta-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .cta-text-main {
+        max-width: 460px;
+      }
+
+      .cta-title {
+        margin: 0 0 8px;
+        font-size: 26px;
+        letter-spacing: -0.02em;
+      }
+
+      .cta-subtitle {
+        margin: 0 0 16px;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .cta-note {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .cta-badge {
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: rgba(15, 23, 42, 0.28);
+        font-size: 11px;
+      }
+
+      .cta-emoji {
+        position: absolute;
+        right: 18px;
+        bottom: -8px;
+        font-size: 60px;
+        opacity: 0.22;
+        pointer-events: none;
+      }
+
+      /* FOOTER */
+      .footer {
+        border-top: 1px solid rgba(148, 163, 184, 0.4);
+        padding: 18px 0 24px;
+        background: rgba(248, 250, 252, 0.9);
+      }
+
+      .footer-inner {
+        max-width: var(--section-max-width);
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--color-muted);
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--color-muted);
+      }
+
+      .footer-link span {
+        font-size: 12px;
+      }
+
+      .footer-heart {
+        color: #f97316;
+      }
+
+      /* REVEAL ANIMATIONS */
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity var(--transition-med), transform var(--transition-med);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal.delay-1 {
+        transition-delay: 0.1s;
+      }
+
+      .reveal.delay-2 {
+        transition-delay: 0.18s;
+      }
+
+      .reveal.delay-3 {
+        transition-delay: 0.26s;
+      }
+
+      .reveal.delay-4 {
+        transition-delay: 0.34s;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 960px) {
+        .hero-inner {
+          grid-template-columns: minmax(0, 1.1fr);
+        }
+
+        .hero {
+          padding-top: 32px;
+        }
+
+        .hero-visual {
+          order: -1;
+        }
+
+        .hero-title {
+          font-size: 32px;
+        }
+
+        .hero-card-stack {
+          margin: 0 auto;
+        }
+      }
+
+      @media (max-width: 800px) {
+        .steps-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .problem-grid,
+        .for-whom-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cta-content {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .cta-emoji {
+          position: static;
+          opacity: 0.3;
+          margin-left: auto;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header-inner {
+          padding-inline: 16px;
+        }
+
+        .logo {
+          font-size: 18px;
+        }
+
+        .hero-title {
+          font-size: 26px;
+        }
+
+        .hero-subtitle {
+          font-size: 15px;
+        }
+
+        section {
+          padding: 28px 0;
+        }
+
+        .steps-grid,
+        .problem-grid,
+        .for-whom-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cta-inner {
+          padding: 22px 18px;
+          border-radius: 22px;
+        }
+
+        .cta-title {
+          font-size: 22px;
+        }
+
+        .footer-inner {
+          flex-direction: column-reverse;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HEADER -->
+      <header class="header">
+        <div class="header-inner">
+          <div>
+            <div class="logo">
+              <div class="logo-badge">
+                <img src="logo.png" alt="Логотип ЯсноБот" />
+              </div>
+              <div>
+                ЯсноБот
+                <div class="logo-sub">объясняем школу по-человечески</div>
+              </div>
+            </div>
+          </div>
+          <div class="header-cta">
+            <button class="btn btn-outline btn-pill" data-scroll="#cta">Попробовать</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <main>
+        <section class="hero">
+          <div class="container hero-inner">
+            <div class="hero-text">
+              <div class="hero-label reveal">
+                <span class="hero-label-dot"></span>
+                AI-помощник для родителей и учителей
+              </div>
+              <h1 class="hero-title reveal delay-1">
+                Объясняем школу через
+                <span>любимых героев ребёнка</span>
+              </h1>
+              <p class="hero-subtitle reveal delay-2">
+                ЯсноБот переводит скучные школьные правила на язык Майнкрафта, Роблокс,
+                Гарри Поттера, Марвел и других вселенных. Без сказок — с настоящей логикой
+                предмета, но в понятных образах.
+              </p>
+              <div class="hero-actions reveal delay-3">
+                <button class="btn btn-primary btn-lg btn-pill" data-scroll="#cta">
+                  Попробовать бесплатно
+                </button>
+                <button class="btn btn-outline btn-pill" data-scroll="#how-it-works">
+                  Как это работает
+                </button>
+              </div>
+              <div class="hero-note reveal delay-4">
+                <strong>7–10 лет</strong> · объяснения по школьной программе 1–4 классов
+              </div>
+            </div>
+
+            <div class="hero-visual">
+              <div class="hero-card-stack reveal delay-2">
+                <div class="hero-float"></div>
+
+                <div class="hero-pill-row">
+                  <div class="hero-pill">
+                    <span class="pill-dot green"></span>
+                    3 класс · Майнкрафт
+                  </div>
+                  <div class="hero-pill">
+                    <span class="pill-dot blue"></span>
+                    Гарри Поттер · Русский
+                  </div>
+                  <div class="hero-pill">
+                    <span class="pill-dot"></span>
+                    Щенячий патруль · Окружающий
+                  </div>
+                </div>
+
+                <article class="hero-card">
+                  <header class="hero-card-header">
+                    <div class="hero-chip">
+                      <span class="hero-chip-dot"></span>
+                      Пример объяснения
+                    </div>
+                    <span style="font-size: 11px; color: var(--color-muted);">
+                      для родителей и детей
+                    </span>
+                  </header>
+
+                  <div class="hero-card-title">Майнкрафт + дроби</div>
+
+                  <div class="hero-card-body">
+                    <div>
+                      <div class="hero-example-label">Как обычно объясняют</div>
+                      <div class="hero-example-text" style="color: var(--color-muted);">
+                        «Одна четвёртая — это дробь. В числителе стоит 1, в знаменателе 4…»
+                      </div>
+                    </div>
+                    <div>
+                      <div class="hero-example-label">Как объясняет ЯсноБот</div>
+                      <div class="hero-example-text">
+                        «Представь, что у тебя блок пирога из 4 кусков. Ты съел 1 кусок — на
+                        карте видно, что закрашена <strong>1 из 4 частей</strong>. Это и есть
+                        <strong>1/4</strong>.»
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="hero-tag-row">
+                    <div class="hero-tag">Математика</div>
+                    <div class="hero-tag">3 класс</div>
+                    <div class="hero-tag">Майнкрафт</div>
+                  </div>
+
+                  <div class="hero-mini-card">
+                    <div class="hero-mini-label">пример 2</div>
+                    <div class="hero-mini-main">Гарри Поттер + падежи</div>
+                    <div class="hero-mini-meta">
+                      <span>«Кому? Чему?»</span>
+                      <span>как заклинания 📚</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ПРОБЛЕМА -->
+        <section class="problem-section">
+          <div class="container">
+            <div class="section-header reveal">
+              <h2 class="section-title">Знакомо?</h2>
+            </div>
+            <div class="problem-grid">
+              <div class="card reveal">
+                <div class="card-icon">😩</div>
+                <div class="card-title">Ребёнок зубрит, но не понимает</div>
+                <div class="card-text">
+                  Уроки превращаются в борьбу, а не в совместный поиск смысла.
+                </div>
+              </div>
+              <div class="card reveal delay-1">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Дроби, суффиксы, падежи — скука</div>
+                <div class="card-text">
+                  Сухие правила из учебника не цепляют внимание и быстро забываются.
+                </div>
+              </div>
+              <div class="card reveal delay-2">
+                <div class="card-icon">🎮</div>
+                <div class="card-title">150 покемонов — помнит, таблицу — нет</div>
+                <div class="card-text">
+                  Мозг ребёнка отлично работает — просто он учит то, что интересно.
+                </div>
+              </div>
+            </div>
+            <p class="problem-note reveal delay-3">
+              <strong>Дети не глупые.</strong> Им просто объясняют не на их языке.
+            </p>
+          </div>
+        </section>
+
+        <!-- КАК ЭТО РАБОТАЕТ -->
+        <section id="how-it-works">
+          <div class="container">
+            <div class="section-header reveal">
+              <h2 class="section-title">4 шага — и ребёнок понял тему</h2>
+              <p class="section-subtitle">
+                Несколько кликов — и сложная тема превращается в понятную историю.
+              </p>
+            </div>
+            <div class="steps-grid">
+              <div class="step-card reveal">
+                <div class="step-number">Шаг 1</div>
+                <div class="step-icon">👧</div>
+                <div class="step-title">Введите имя ребёнка</div>
+                <div class="step-text">
+                  Чтобы ЯсноБот мог обращаться по имени и подбирать подходящий тон общения.
+                </div>
+              </div>
+              <div class="step-card reveal delay-1">
+                <div class="step-number">Шаг 2</div>
+                <div class="step-icon">🏫</div>
+                <div class="step-title">Выберите класс (1–4)</div>
+                <div class="step-text">
+                  Мы учитываем возраст, программу и уровень сложности задания.
+                </div>
+              </div>
+              <div class="step-card reveal delay-2">
+                <div class="step-number">Шаг 3</div>
+                <div class="step-icon">🎮</div>
+                <div class="step-title">Выберите любимую вселенную</div>
+                <div class="step-text">
+                  ЯсноБот объяснит тему через мир, который ребёнок и так обожает.
+                </div>
+                <div class="universe-row">
+                  <span class="universe-pill">Майнкрафт ⛏️</span>
+                  <span class="universe-pill">Роблокс 🎲</span>
+                  <span class="universe-pill">Гарри Поттер 🧙‍♂️</span>
+                  <span class="universe-pill">Марвел 🦸‍♀️</span>
+                  <span class="universe-pill">Щенячий Патруль 🐾</span>
+                </div>
+              </div>
+              <div class="step-card reveal delay-3">
+                <div class="step-number">Шаг 4</div>
+                <div class="step-icon">📝</div>
+                <div class="step-title">Введите тему урока</div>
+                <div class="step-text">
+                  «Дроби 3 класс», «Падежи», «Таблица умножения на 7» — или просто фото/текст
+                  задания.
+                </div>
+              </div>
+            </div>
+            <div class="steps-footer reveal delay-2">
+              <div class="steps-arrow">↓</div>
+              <div>Через 5 секунд получаете объяснение! Можно читать вместе с ребёнком.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ДЛЯ КОГО -->
+        <section>
+          <div class="container">
+            <div class="section-header reveal">
+              <h2 class="section-title">Кому подойдёт ЯсноБот</h2>
+            </div>
+            <div class="for-whom-grid">
+              <div class="for-whom-card reveal">
+                <div class="for-whom-header">
+                  <div class="for-whom-icon">👩</div>
+                  <div class="for-whom-title">Родителям</div>
+                </div>
+                <div class="for-whom-text">
+                  Которые устали объяснять дроби и правила русского языка в слезах — и хотят
+                  сохранить хорошие отношения с ребёнком.
+                </div>
+              </div>
+              <div class="for-whom-card reveal delay-1">
+                <div class="for-whom-header">
+                  <div class="for-whom-icon">👨‍🏫</div>
+                  <div class="for-whom-title">Репетиторам</div>
+                </div>
+                <div class="for-whom-text">
+                  Которые хотят говорить с учеником на одном языке и делать объяснения ближе к
+                  его интересам.
+                </div>
+              </div>
+              <div class="for-whom-card reveal delay-2">
+                <div class="for-whom-header">
+                  <div class="for-whom-icon">🏫</div>
+                  <div class="for-whom-title">Учителям</div>
+                </div>
+                <div class="for-whom-text">
+                  Которые ищут новые способы увлечь класс и объяснить сложные темы через понятные
+                  детям миры.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section" id="cta">
+          <div class="container">
+            <div class="cta-inner reveal">
+              <div class="cta-content">
+                <div class="cta-text-main">
+                  <h2 class="cta-title">Попробуйте — это бесплатно</h2>
+                  <p class="cta-subtitle">
+                    Первые 10 объяснений — бесплатно. Без регистрации, без привязки карты,
+                    без лишних форм.
+                  </p>
+                  <p class="cta-note">
+                    Просто задайте тему — и посмотрите, как меняется взгляд ребёнка на
+                    «скучные» предметы.
+                  </p>
+                </div>
+                <div class="cta-actions">
+                  <div class="cta-badge">1–4 классы · Математика · Русский · Окружающий мир</div>
+                  <button class="btn btn-primary btn-lg btn-pill">
+                    Запустить ЯсноБота
+                  </button>
+                  <span style="font-size: 12px; opacity: 0.85;">
+                    Ссылка скоро появится. Сейчас вы на странице-представлении проекта.
+                  </span>
+                </div>
+              </div>
+              <div class="cta-emoji">✨</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>© 2025 ЯсноБот</div>
+          <div class="footer-links">
+            <a href="#" class="footer-link">
+              <span>Telegram</span>
+            </a>
+            <a href="mailto:hello@yasnobot.ru" class="footer-link">
+              <span>Email</span>
+            </a>
+            <span>Сделано с <span class="footer-heart">❤️</span> и нейросетями</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Плавный скролл по кнопкам с data-scroll
+      document.querySelectorAll("[data-scroll]").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          var target = btn.getAttribute("data-scroll");
+          var el = document.querySelector(target);
+          if (el) {
+            window.scrollTo({
+              top: el.offsetTop - 80,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+
+      // Анимация появления секций при скролле
+      var revealElements = document.querySelectorAll(".reveal");
+
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(
+          function (entries, obs) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.2,
+          }
+        );
+
+        revealElements.forEach(function (el) {
+          observer.observe(el);
+        });
+      } else {
+        // Fallback: показываем всё сразу
+        revealElements.forEach(function (el) {
+          el.classList.add("visible");
+        });
+      }
+    </script>
+  </body>
+</html>
+
