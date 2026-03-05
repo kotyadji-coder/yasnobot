@@ -721,6 +721,17 @@
         gap: 10px;
       }
 
+      .cta-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .cta-buttons .btn {
+        justify-content: center;
+        min-width: 180px;
+      }
+
       .cta-badge {
         border-radius: 999px;
         padding: 5px 10px;
@@ -899,6 +910,14 @@
         .footer-inner {
           flex-direction: column-reverse;
           align-items: flex-start;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+        }
+
+        .cta-buttons .btn {
+          width: 100%;
         }
       }
     </style>
@@ -1113,7 +1132,7 @@
             </div>
             <div class="steps-footer reveal delay-2">
               <div class="steps-arrow">↓</div>
-              <div>Через 5 секунд получаете объяснение! Можно читать вместе с ребёнком.</div>
+              <div>Через 5 минут получаете объяснение! Можно читать вместе с ребёнком.</div>
             </div>
           </div>
         </section>
@@ -1176,13 +1195,23 @@
                   </p>
                 </div>
                 <div class="cta-actions">
-                  <div class="cta-badge">1–4 классы · Математика · Русский · Окружающий мир · Английский язык </div>
-                  <button class="btn btn-primary btn-lg btn-pill">
-                    Запустить ЯсноБота
-                  </button>
-                  <span style="font-size: 12px; opacity: 0.85;">
-                    Ссылка скоро появится. Сейчас вы на странице-представлении проекта.
-                  </span>
+                  <div class="cta-badge">
+                    1–4 классы · Математика · Русский · Окружающий мир · Английский язык
+                  </div>
+                  <div class="cta-buttons">
+                    <a
+                      href="https://t.me/edtale_bot"
+                      class="btn btn-primary btn-lg btn-pill"
+                    >
+                      ЯсноБот в Telegram
+                    </a>
+                    <a
+                      href="https://vk.me/edtale"
+                      class="btn btn-outline btn-lg btn-pill"
+                    >
+                      ЯсноБот ВКонтакте
+                    </a>
+                  </div>
                 </div>
               </div>
               <div class="cta-emoji">✨</div>
@@ -1196,11 +1225,8 @@
         <div class="footer-inner">
           <div>© 2026 ЯсноБот</div>
           <div class="footer-links">
-            <a href="#" class="footer-link">
+            <a href="https://t.me/edtale_bot" class="footer-link">
               <span>Telegram</span>
-            </a>
-            <a href="mailto:hello@yasnobot.ru" class="footer-link">
-              <span>Email</span>
             </a>
             <span>Сделано с <span class="footer-heart">❤️</span> </span>
           </div>

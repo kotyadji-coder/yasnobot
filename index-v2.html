@@ -752,6 +752,17 @@
         gap: 6px;
       }
 
+      .cta-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .cta-buttons .btn {
+        justify-content: center;
+        min-width: 180px;
+      }
+
       .cta-emoji-bg {
         position: absolute;
         right: -20px;
@@ -914,6 +925,14 @@
         .footer-inner {
           flex-direction: column-reverse;
           align-items: flex-start;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+        }
+
+        .cta-buttons .btn {
+          width: 100%;
         }
       }
     </style>
@@ -1259,12 +1278,20 @@
                     <span>⚡</span>
                     <span>Объяснение за ~5 секунд</span>
                   </div>
-                  <button class="btn btn-primary btn-lg">
-                    Запустить ЯсноБота
-                  </button>
-                  <span style="font-size: 12px; opacity: 0.9;">
-                    Ссылка появится позже. Сейчас это страница-представление проекта.
-                  </span>
+                  <div class="cta-buttons">
+                    <a
+                      href="https://t.me/edtale_bot"
+                      class="btn btn-primary btn-lg"
+                    >
+                      ЯсноБот в Telegram
+                    </a>
+                    <a
+                      href="https://vk.me/edtale"
+                      class="btn btn-outline btn-lg"
+                    >
+                      ЯсноБот ВКонтакте
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -1279,8 +1306,7 @@
         <div class="footer-inner">
           <div>© 2025 ЯсноБот</div>
           <div class="footer-links">
-            <a href="#" class="footer-link">Telegram</a>
-            <a href="mailto:hello@yasnobot.ru" class="footer-link">Email</a>
+            <a href="https://t.me/edtale_bot" class="footer-link">Telegram</a>
             <span>Сделано с <span class="footer-heart">❤️</span> и нейросетями</span>
           </div>
         </div>
